@@ -1,5 +1,5 @@
-import {Component, Input, signal} from '@angular/core';
-import {Categorie} from "../../model/categorie/categorie.model";
+import {Component, Input} from '@angular/core';
+import {Category} from "../../model/category/category.model";
 
 @Component({
   selector: 'app-service-view',
@@ -9,12 +9,5 @@ import {Categorie} from "../../model/categorie/categorie.model";
 export class ServiceViewComponent {
 
   @Input()
-  public categorie : Categorie = Object.create(null);
-
-  displayedColumns: Array<string> = Object.keys(this.categorie.produits);
-
-  createProduct (){
-    //todo
-  }
-
+  public category! : Category;
 }

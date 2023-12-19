@@ -1,16 +1,9 @@
-<ng-container *ngIf="isLoading">
-  <mat-spinner></mat-spinner>
-</ng-container>
+<div class="bg-blue-950 h-screen py-8">
+    <mat-spinner *ngIf="isLoading" class="absolute top-1/2 left-1/2"></mat-spinner>
 
-<ng-container *ngIf="!isLoading">
-
-  <div *ngFor="let element of catalog.categorie">
-
-    <app-service-view
-    [categorie]="element"></app-service-view>
-
-
+  <div *ngIf="!isLoading" class="container mx-auto grid grid-cols-6">
+    <app-service-view *ngFor="let category of categories" class="container" [category]="category">
+    </app-service-view>
   </div>
+</div>
 
-
-</ng-container>

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CatalogService} from "../../service/catalog/catalog.service";
-import {Catalog} from "../../model/catalog/catalog.model";
+import {Category} from "../../model/category/category.model";
 
 @Component({
   selector: 'app-root',
@@ -10,19 +10,18 @@ import {Catalog} from "../../model/catalog/catalog.model";
 export class AppComponent implements OnInit{
   title = 'front-catalog';
 
-  catalog : Catalog = Object.create(null);
+  categories: Category[] | undefined;
   isLoading : boolean = true;
 
-  constructor(private catalogService : CatalogService) {
-  }
+  constructor(private catalogService : CatalogService) {}
 
   ngOnInit(): void {
-    this.catalogService.getCatalog().subscribe(catalogBack => {
-        this.catalog = new Catalog(catalogBack);
+    this.catalogService.getCategories().subscribe(
+      (categories: Category[]) => {
+        this.categories = categories;
         this.isLoading = false;
-    },error => {
-      console.log("j'ai eu une erreur");
-    });
-
+      },
+      error => {alert('Erreur')}
+    )
   }
 }
