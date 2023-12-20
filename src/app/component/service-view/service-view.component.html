@@ -1,10 +1,23 @@
-<div class="border-2 border-white rounded text-white p-8">
+<div class="border-2 border-white rounded text-white p-8 h-full">
+  <div class="flex justify-between">
+    <span class="material-symbols-outlined cursor-pointer" (click)="isFlipped = !isFlipped">edit</span>
+    <span class="material-symbols-outlined cursor-pointer" (click)="removeCategory(category.id)">delete</span>
+  </div>
+
   <h2>{{ category.name }}</h2>
 
-  <div>
+  <div *ngIf="!isFlipped">
     <div *ngFor="let distribution of category.distributions">
       <span>{{ distribution.name }}</span>
       <p>{{ distribution.description }}</p>
     </div>
+  </div>
+
+  <div *ngIf="isFlipped" class="flex justify-center items-center">
+    <form [formGroup]="updatedCategoryForm" (ngSubmit)="updateCategory(); isFlipped = !isFlipped">
+      <label class="mr-2">Nouveau nom</label>
+      <input type="text" formControlName="name" class="text-black">
+      <button class="bg-white p-4 rounded m-4 text-black">Sauvegarder</button>
+    </form>
   </div>
 </div>

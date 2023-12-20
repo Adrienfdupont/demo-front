@@ -14,4 +14,16 @@ export class CatalogService {
   getCategories(): Observable<Category[]> {
     return this.httpClient.get<Category[]>(`${environment.apiUrl}/categories`);
   }
+
+  createCategory(category: Category) {
+    return this.httpClient.post(`${environment.apiUrl}/categories`, category);
+  }
+
+  deleteCategory(id: number) {
+    return this.httpClient.delete(`${environment.apiUrl}/categories/${id}`);
+  }
+
+  updateCategory(category: Category) {
+    return this.httpClient.put(`${environment.apiUrl}/categories`, category);
+  }
 }
