@@ -30,7 +30,6 @@ export class ServiceViewComponent implements OnInit{
   removeCategory(id: number) {
     this.catalogService.deleteCategory(id).subscribe(
       () => {
-        console.log('catégorie supprimée');
       this.onDelete.emit(id);
       }
     )
@@ -39,9 +38,7 @@ export class ServiceViewComponent implements OnInit{
   updateCategory() {
     this.category.name = this.updatedCategoryForm.getRawValue().name;
     this.catalogService.updateCategory(this.category).subscribe(
-      () => {
-        console.log(this.category);
-      }
-    )
+      error => alert('Une erreur est survenue.'),
+    );
   }
 }

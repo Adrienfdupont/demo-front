@@ -38,7 +38,6 @@ export class AppComponent implements OnInit{
   }
 
   addCategory() {
-    console.log(this.newCategoryForm.getRawValue());
     this.catalogService.createCategory(this.newCategoryForm.getRawValue()).subscribe(
       () => {
         this.categories?.push(new Category(this.newCategoryForm.getRawValue()));
