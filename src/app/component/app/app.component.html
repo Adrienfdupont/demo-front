@@ -1,16 +1,18 @@
-<div class="bg-blue-950 h-screen py-8">
+<div class="bg-slate-800 h-screen py-8">
     <mat-spinner *ngIf="isLoading" class="absolute top-1/2 left-1/2"></mat-spinner>
 
-  <div *ngIf="!isLoading" class="container mx-auto grid grid-cols-6 gap-4 text-white">
+  <div *ngIf="!isLoading" class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-white">
     <app-service-view *ngFor="let category of categories" [category]="category" (onDelete)="hideCategory($event)">
     </app-service-view>
 
-    <div class="flex justify-center items-center">
-      <form [formGroup]="newCategoryForm" (ngSubmit)="addCategory()">
+    <form [formGroup]="newCategoryForm" (ngSubmit)="addCategory()" class="flex flex-col justify-between items-center border-2 border-white rounded text-white p-8 h-full">
+      <div>
         <label class="mr-2">Nom</label>
         <input type="text" formControlName="name" class="text-black">
+      </div>
+      <div>
         <button class="bg-white p-4 rounded m-4 text-black">Ajouter</button>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </div>

@@ -35,4 +35,8 @@ export class CatalogService {
   deleteDistribution(id: number) {  
     return this.httpClient.delete(`${environment.apiUrl}/distributions/${id}`);
   }
+
+  updateDistribiution(distribution: Distribution) {
+    return this.httpClient.put<Distribution>(`${environment.apiUrl}/distributions`, distribution.serialize());
+  }
 }

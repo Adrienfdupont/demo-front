@@ -12,9 +12,11 @@ import {Distribution} from "../../model/distribution/distribution.model";
 export class ServiceViewComponent implements OnInit{
   updatedCategoryForm!: FormGroup;
   createDistributionForm!: FormGroup;
+  updateDistributionForm!: FormGroup;
   @Input() category!: Category;
   isFlipped = false;
   isAdding = false;
+  updatingDistribution: number | undefined
 
   @Output()
   public onDelete : EventEmitter<number> = new EventEmitter<number>();
@@ -31,15 +33,18 @@ export class ServiceViewComponent implements OnInit{
     this.createDistributionForm = this.formBuilder.group({
       name: [null, Validators.required],
       description: [null, Validators.required],
-    })
+    });
+    this.updateDistributionForm = this.formBuilder.group({
+      name: [null, Validators.required],
+      description: [null, Validators.required],
+    });
   }
 
-  removeCategory(id: number) {
-    this.catalogService.deleteCategory(id).subscribe(
-      () => {
-      this.onDelete.emit(id);
-      }
-    )
+  removeCategory() {
+    this.catalogService.deleteCategory(this.category.id).subscribe({
+      next: () => this.onDelete.emit(this.category.id),
+      error: () => alert('Une erreur est survenue.'),
+    })
   } 
 
   updateCategory() {
@@ -66,5 +71,23 @@ export class ServiceViewComponent implements OnInit{
         this.category.distributions = this.category.distributions.filter(distribution => distribution.id !== id),
       error: () => alert('Une erreur est survenue.'),
     })
+  }
+
+  updateDistribution(distribution: Distribution) {
+    this.updatingDistribution = undefined;
+    const newDistribution = new Distribution(this.updateDistributionForm.getRawValue());
+    newDistribution.id = distribution.id;
+    this.catalogService.updateDistribiution(newDistribution).subscribe({
+      next: (updatedDistribution: Distribution) => distribution = newDistribution,
+      error: () => alert('Une erreur est survenue.'),
+    });
+  }
+
+  setUpdatingDistribution(id: number) {
+    if (this.updatingDistribution !== id) {
+      this.updatingDistribution = id;
+    } else {
+      this.updatingDistribution = undefined;
+    }
   }
 }
