@@ -1,36 +1,42 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Catalog} from "../../model/catalog/catalog.model";
 import {environment} from "../../../environments/environment";
+import {Observable} from "rxjs";
+import {Category} from "../../model/category/category.model";
+import {Distribution} from "../../model/distribution/distribution.model";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogService {
+  constructor(private httpClient : HttpClient) {}
 
-  url : string;
-  constructor(private httpClient : HttpClient) {
-    this.url = environment.apiUrl;
+  getCategories(): Observable<Category[]> {
+    return this.httpClient.get<Category[]>(`${environment.apiUrl}/categories`);
   }
 
-  //GET
-  getCatalog(){
-    return this.httpClient.get<Catalog>(this.url);
+  createCategory(category: Category) {    
+    return this.httpClient.post<Category>(`${environment.apiUrl}/categories`, category.serialize());
   }
 
-  //POST
-  createCatalog(catalog : Catalog){
-    return this.httpClient.post(this.url,catalog);
+  deleteCategory(id: number) {
+    return this.httpClient.delete(`${environment.apiUrl}/categories/${id}`);
   }
 
-  //PUT
-  updateCatalog(id : number, catalog : Catalog){
-    return this.httpClient.put(this.url + '/' + id ,catalog);
+  updateCategory(category: Category) {
+    return this.httpClient.put<Category>(`${environment.apiUrl}/categories`, category.serialize());
   }
 
-  //DELETE
-  deleteCatalog(id : number){
-    return this.httpClient.delete(this.url + '/' + id);
+  createDistribution(distribution: Distribution) {    
+    return this.httpClient.post<Distribution>(`${environment.apiUrl}/distributions`, distribution.serialize());
+  }
+
+  deleteDistribution(id: number) {  
+    return this.httpClient.delete(`${environment.apiUrl}/distributions/${id}`);
+  }
+
+  updateDistribiution(distribution: Distribution) {
+    return this.httpClient.put<Distribution>(`${environment.apiUrl}/distributions`, distribution.serialize());
   }
 }

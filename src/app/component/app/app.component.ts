@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CatalogService} from "../../service/catalog/catalog.service";
-import {Catalog} from "../../model/catalog/catalog.model";
+import {Category} from "../../model/category/category.model";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -8,21 +9,43 @@ import {Catalog} from "../../model/catalog/catalog.model";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'front-catalog';
+  categories: Category[] | undefined;
+  isLoading!: boolean;
+  newCategoryForm!: FormGroup;
 
-  catalog : Catalog = Object.create(null);
-  isLoading : boolean = true;
-
-  constructor(private catalogService : CatalogService) {
-  }
+  constructor(
+    private catalogService : CatalogService,
+    private formBuilder: FormBuilder,
+  ) {}
 
   ngOnInit(): void {
-    this.catalogService.getCatalog().subscribe(catalogBack => {
-        this.catalog = new Catalog(catalogBack);
-        this.isLoading = false;
-    },error => {
-      console.log("j'ai eu une erreur");
-    });
+    this.getCategories();
 
+    this.newCategoryForm = this.formBuilder.group({
+      name: [null, Validators.required],
+    });
+  }
+
+  getCategories() {
+    this.isLoading = true;
+    this.catalogService.getCategories().subscribe({
+      next: (categories: Category[]) => {
+        this.categories = categories;
+        this.isLoading = false;
+      },
+      error: () => alert('Une erreur est survenue.'),
+    })
+  }
+
+  addCategory() {
+    const newCategory = new Category(this.newCategoryForm.getRawValue());
+    this.catalogService.createCategory(newCategory).subscribe({
+      next: (category: Category) => this.categories?.push(new Category(category)),
+      error: () => alert('Une erreur est survenue.'),
+    })
+  }
+
+  hideCategory(id: number) {
+    this.categories = this.categories?.filter(category => category.id !== id);
   }
 }
