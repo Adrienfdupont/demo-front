@@ -2,10 +2,7 @@
     <mat-spinner *ngIf="isLoading" class="absolute top-1/2 left-1/2"></mat-spinner>
 
   <div *ngIf="!isLoading" class="container mx-auto grid grid-cols-6 gap-4 text-white">
-    <app-service-view *ngFor="let category of categories"
-                      [category]="category"
-    (onDelete)="hideCategory($event)"
-    >
+    <app-service-view *ngFor="let category of categories" [category]="category" (onDelete)="hideCategory($event)">
     </app-service-view>
 
     <div class="flex justify-center items-center">

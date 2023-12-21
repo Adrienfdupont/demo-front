@@ -28,21 +28,21 @@ export class AppComponent implements OnInit{
 
   getCategories() {
     this.isLoading = true;
-    this.catalogService.getCategories().subscribe(
-      (categories: Category[]) => {
+    this.catalogService.getCategories().subscribe({
+      next: (categories: Category[]) => {
         this.categories = categories;
         this.isLoading = false;
       },
-      error => alert('Une erreur est survenue.')
-    )
+      error: () => alert('Une erreur est survenue.'),
+    })
   }
 
   addCategory() {
-    this.catalogService.createCategory(this.newCategoryForm.getRawValue()).subscribe(
-      () => {
-        this.categories?.push(new Category(this.newCategoryForm.getRawValue()));
-      }
-    )
+    const newCategory = new Category(this.newCategoryForm.getRawValue());
+    this.catalogService.createCategory(newCategory).subscribe({
+      next: (category: Category) => this.categories?.push(new Category(category)),
+      error: () => alert('Une erreur est survenue.'),
+    })
   }
 
   hideCategory(id: number) {

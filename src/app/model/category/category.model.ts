@@ -38,4 +38,12 @@ export class Category {
   set distributions(value: Distribution[]) {
     this._distributions = value;
   }
+
+  serialize() {
+    return {
+      id: this.id,
+      name: this.name,
+      distributions: this.distributions,
+    };
+  }
 }

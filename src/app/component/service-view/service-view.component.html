@@ -1,15 +1,23 @@
 <div class="border-2 border-white rounded text-white p-8 h-full">
   <div class="flex justify-between">
     <span class="material-symbols-outlined cursor-pointer" (click)="isFlipped = !isFlipped">edit</span>
+    <span class="material-symbols-outlined cursor-pointer" (click)="isAdding = !isAdding">add</span>
     <span class="material-symbols-outlined cursor-pointer" (click)="removeCategory(category.id)">delete</span>
   </div>
 
   <h2>{{ category.name }}</h2>
 
   <div *ngIf="!isFlipped">
-    <div *ngFor="let distribution of category.distributions">
-      <span>{{ distribution.name }}</span>
-      <p>{{ distribution.description }}</p>
+    <div *ngFor="let distribution of category.distributions" class="flex">
+      <div>
+        <span>{{ distribution.name }}</span>
+        <p>{{ distribution.description }}</p>
+      </div>
+      <div>
+        <span class="material-symbols-outlined cursor-pointer" (click)="removeDistribution(distribution.id)">
+          delete
+        </span>
+      </div>
     </div>
   </div>
 
@@ -20,4 +28,26 @@
       <button class="bg-white p-4 rounded m-4 text-black">Sauvegarder</button>
     </form>
   </div>
+</div>
+
+<div *ngIf="isAdding" class="bg-black absolute inset-0 opacity-50"></div>
+<div *ngIf="isAdding" class="absolute flex justify-center items-center p-4 bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+  <form [formGroup]="createDistributionForm" class="text-black" (ngSubmit)="addDistribution(); isAdding = !isAdding">
+    <div class="flex justify-end">
+      <span class="material-symbols-outlined cursor-pointer" (click)="isAdding = !isAdding">
+        close
+      </span>
+    </div>
+    <div>
+      <label class="mr-2">Nom</label>
+      <input type="text" formControlName="name" class="border">
+    </div>
+    <div>
+      <label class="mr-2">Description</label>
+      <input type="text" formControlName="description" class="border">
+    </div>
+    <button class="p-4 rounded m-4 bg-blue-800 text-white">
+      Ajouter
+    </button>
+  </form>
 </div>
